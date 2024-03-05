@@ -1,31 +1,28 @@
-import unittest
+import pytest
 from main import Category, Product
 
-class TestCategory(unittest.TestCase):
-    def test_category_initialization(self):
-        category = Category("Electronics", "Products related to electronics")
-        self.assertEqual(category.name, "Electronics")
-        self.assertEqual(category.description, "Products related to electronics")
+@pytest.fixture
+def sample_category():
+    return Category("Electronics", "Products related to electronics")
 
-    def test_product_initialization(self):
-        product = Product("Laptop", "High-performance laptop", 1000, 10)
-        self.assertEqual(product.name, "Laptop")
-        self.assertEqual(product.description, "High-performance laptop")
-        self.assertEqual(product.price, 1000)
-        self.assertEqual(product.quantity_in_stock, 10)
+@pytest.fixture
+def sample_product():
+    return Product("Laptop", "High-performance laptop", 1000, 10)
 
-    def test_count_products(self):
-        category = Category("Electronics", "Products related to electronics")
-        product1 = Product("Laptop", "High-performance laptop", 1000, 10)
-        product2 = Product("Smartphone", "Latest smartphone model", 500, 20)
-        category.add_product(product1)
-        category.add_product(product2)
-        self.assertEqual(len(category.products), 2)
+def test_category_initialization(sample_category):
+    assert sample_category.name == "Electronics"
+    assert sample_category.description == "Products related to electronics"
 
-    def test_count_categories(self):
-        category1 = Category("Electronics", "Products related to electronics")
-        category2 = Category("Clothing", "Fashionable clothing")
-        self.assertEqual(Category.total_categories, 3)
+def test_product_initialization(sample_product):
+    assert sample_product.name == "Laptop"
+    assert sample_product.description == "High-performance laptop"
+    assert sample_product.price == 1000
+    assert sample_product.quantity_in_stock == 10
 
-if __name__ == '__main__':
-    unittest.main()
+def test_count_products(sample_category, sample_product):
+    sample_category.add_product(sample_product)
+    assert len(sample_category.products) == 1
+
+def test_count_categories(sample_category):
+    assert Category.total_categories == 3
+
