@@ -9,20 +9,23 @@ def sample_category():
 def sample_product():
     return Product("Laptop", "High-performance laptop", 1000, 10)
 
-def test_category_initialization(sample_category):
-    assert sample_category.name == "Electronics"
-    assert sample_category.description == "Products related to electronics"
-
-def test_product_initialization(sample_product):
-    assert sample_product.name == "Laptop"
-    assert sample_product.description == "High-performance laptop"
-    assert sample_product.price == 1000
-    assert sample_product.quantity_in_stock == 10
-
-def test_count_products(sample_category, sample_product):
+def test_category_add_product(sample_category, sample_product):
     sample_category.add_product(sample_product)
-    assert len(sample_category.products) == 1
+    assert sample_category.get_products_info() == ["Laptop, 1000 руб. Остаток: 10 шт."]
 
-def test_count_categories(sample_category):
-    assert Category.total_categories == 3
+def test_product_price_setter(sample_product):
+    sample_product.price = 1500
+    assert sample_product.price == 1500
+
+def test_product_price_setter_incorrect_value(sample_product, capsys):
+    sample_product.price = -500
+    captured = capsys.readouterr()
+    assert captured.out.strip() == "Цена введена некорректно"
+    assert sample_product.price == 1000  # Предполагается, что цена осталась без изменений
+
+def test_product_price_deleter(sample_product, capsys):
+    del sample_product.price
+    captured = capsys.readouterr()
+    assert captured.out.strip() == "Удаление атрибута 'price' не разрешено"
+    assert hasattr(sample_product, "price")  # Предполагается, что атрибут 'price' не был удален
 
