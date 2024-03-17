@@ -42,3 +42,14 @@ class Product:
     @price.deleter
     def price(self):
         print("Удаление атрибута 'price' не разрешено")
+
+    def __str__(self):
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity_in_stock} шт."
+
+    def __len__(self):
+        return self.quantity_in_stock
+
+    def __add__(self, other):
+        total_price = self.price * len(self) + other.price * len(other)
+        return total_price
+
