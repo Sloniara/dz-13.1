@@ -10,11 +10,12 @@ class Category:
     def add_product(self, product):
         self.__products.append(product)
 
-    def get_products_info(self):
-        products_info = []
-        for product in self.__products:
-            products_info.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity_in_stock} шт.")
-        return products_info
+    @property
+    def product_count(self):
+        return len(self.__products)
+
+    def __str__(self):
+        return f"{self.name}, количество продуктов: {self.product_count} шт."
 
     @classmethod
     def create_product(cls, name, description, price, quantity_in_stock):
@@ -44,12 +45,6 @@ class Product:
         print("Удаление атрибута 'price' не разрешено")
 
     def __str__(self):
-        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity_in_stock} шт."
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity_in_stock} шт."
 
-    def __len__(self):
-        return self.quantity_in_stock
-
-    def __add__(self, other):
-        total_price = self.price * len(self) + other.price * len(other)
-        return total_price
 
