@@ -10,12 +10,14 @@ class Category:
     def add_product(self, product):
         self.__products.append(product)
 
-    @property
-    def product_count(self):
-        return len(self.__products)
+    def __len__(self):
+        count = 0
+        for product in self.__products:
+            count += product.quantity
+        return count
 
     def __str__(self):
-        return f"{self.name}, количество продуктов: {self.product_count} шт."
+        return f"{self.name}, количество продуктов: {self.__len__} шт."
 
     @classmethod
     def create_product(cls, name, description, price, quantity_in_stock):
